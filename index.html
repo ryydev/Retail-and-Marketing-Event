@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail & Marketing Education Event</title>
+    
+    <!-- Fonts: Playfair for elegance, Poppins for modern clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #080b12;
+            --primary: #7B2CBF;
+            --secondary: #3A0CA3;
+            --accent: #E0AAFF;
+            --text-main: #ffffff;
+            --text-muted: #b3b9c5;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* For custom cursor */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Custom Cursor --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* --- Animated Background Blobs --- */
+        .blob-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 {
+            width: 400px; height: 400px;
+            background: var(--primary);
+            top: -10%; left: -10%;
+            animation-duration: 12s;
+        }
+        .blob-2 {
+            width: 500px; height: 500px;
+            background: var(--secondary);
+            bottom: -20%; right: -10%;
+            animation-duration: 15s;
+        }
+        .blob-3 {
+            width: 300px; height: 300px;
+            background: rgba(224, 170, 255, 0.3);
+            top: 40%; left: 40%;
+            animation-duration: 18s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* --- Opening Screen --- */
+        #opening-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: #05070a;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+            text-align: center;
+        }
+        #opening-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .opening-content p {
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            animation: fadeUp 1s ease forwards;
+        }
+        .opening-content h1 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeUp 1.2s ease forwards;
+        }
+        .btn-open {
+            padding: 15px 40px;
+            background: rgba(123, 44, 191, 0.2);
+            border: 1px solid var(--primary);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 1.4s ease forwards;
+        }
+        .btn-open:hover {
+            background: var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: 0.4s;
+            background: transparent;
+        }
+        nav.scrolled {
+            background: rgba(8, 11, 18, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 50px;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        /* --- Main Content Wrapper --- */
+        #main-content {
+            display: none; /* Shown after opening */
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        .typing-container {
+            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+        .typing-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* --- Generic Section Styles --- */
+        section {
+            padding: 100px 10vw;
+            position: relative;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: var(--accent);
+        }
+
+        /* --- Welcome & Cards (Glassmorphism) --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .welcome-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* --- Event Details --- */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .detail-item {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .detail-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+        }
+        .detail-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .detail-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .detail-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Agenda Timeline --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--glass-border);
+            top: 0; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+        }
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: left; }
+        .timeline-dot {
+            width: 16px; height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            box-shadow: 0 0 10px var(--accent);
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot { right: -8px; }
+        .timeline-item:nth-child(even) .timeline-dot { left: -8px; }
+        .time { color: var(--accent); font-weight: 600; margin-bottom: 5px; }
+
+        /* --- RSVP Form --- */
+        .rsvp-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(224, 170, 255, 0.2);
+        }
+        textarea.form-control {
+            resize: none;
+            height: 120px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-submit:hover:not(:disabled) {
+            box-shadow: 0 0 20px var(--primary);
+            transform: scale(1.02);
+        }
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* --- Closing --- */
+        .closing {
+            text-align: center;
+            padding: 150px 20px;
+        }
+        .closing h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+        }
+        .social-icons {
+            margin-bottom: 15px;
+        }
+        .social-icons a {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+        .social-icons a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* --- Back to Top --- */
+        #back-top {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            opacity: 0; visibility: hidden;
+            transition: 0.3s;
+            z-index: 999;
+        }
+        #back-top.visible {
+            opacity: 1; visibility: visible;
+        }
+        #back-top:hover {
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            * { cursor: auto !important; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+            .typing-container { font-size: 2.5rem; }
+            .timeline::after { left: 20px; }
+            .timeline-item { width: 100%; text-align: left !important; padding-left: 50px; }
+            .timeline-item:nth-child(even) { left: 0; }
+            .timeline-item:nth-child(odd) .timeline-dot, .timeline-item:nth-child(even) .timeline-dot { left: 12px; }
+            nav { padding: 20px; }
+            nav.scrolled { padding: 15px 20px; }
+            .opening-content h1 { font-size: 2rem; }
+            .closing h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Animated Background Blobs -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Opening Screen -->
+    <div id="opening-screen">
+        <div class="opening-content">
+            <p>You're Invited</p>
+            <h1>Retail and Marketing<br>Education Event 2026</h1>
+            <button class="btn-open" id="open-btn">Open Invitation</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        
+        <!-- Navbar -->
+        <nav id="navbar">
+            <div class="logo">R&M.</div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="typing-container serif">
+                <span class="typing-text"></span>
+            </div>
+            <p data-aos="fade-up" data-aos-delay="500">Discover the future of consumer engagement, modern commerce strategies, and immersive brand experiences at our exclusive summit.</p>
+        </header>
+
+        <!-- Welcome Section -->
+        <section class="welcome" id="welcome">
+            <div class="glass-card welcome-content" data-aos="fade-up">
+                <h2 class="section-title" style="margin-bottom: 20px;">Welcome</h2>
+                <p>We cordially invite you to an evening of profound insights and networking. Join industry leaders and visionaries as we decode the evolving landscape of retail and marketing. This is more than an event; it's a catalyst for your next big breakthrough.</p>
+            </div>
+        </section>
+
+        <!-- Event Details Section -->
+        <section class="details" id="details">
+            <h2 class="section-title" data-aos="fade-up">Event Details</h2>
+            <div class="details-grid">
+                <div class="glass-card detail-item" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-location-dot detail-icon"></i>
+                    <h3>Venue</h3>
+                    <p>SMKN 1 KEDAWUNG<br>Cirebon, West Java</p>
+                </div>
+                <div class="glass-card detail-item" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-regular fa-calendar detail-icon"></i>
+                    <h3>Date & Time</h3>
+                    <p>Friday, May 15th, 2026<br>01:00 PM - 05:00 PM</p>
+                </div>
+            </div>
+        </section>
+
+<!-- Agenda Timeline -->
+<section class="agenda" id="agenda">
+    <h2 class="section-title" data-aos="fade-up">Event Flow</h2>
+    
+    <div class="timeline">
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">01:00 PM</div>
+            <h3>Opening & Registration</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Guest registration, welcoming session, and opening ceremony.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">01:30 PM</div>
+            <h3>Product Exhibition</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Showcase of innovative retail products and creative business ideas.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">02:00 PM</div>
+            <h3>Retail Service Simulation</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Interactive customer service and retail transaction simulation.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">02:45 PM</div>
+            <h3>Break & Networking</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Refreshment break and networking session with participants.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">03:00 PM</div>
+            <h3>Marketing Presentation</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Presentation of marketing strategies and promotional campaigns.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">03:30 PM</div>
+            <h3>Business Education & Innovation</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Educational session about modern business development and innovation.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">04:00 PM</div>
+            <h3>Entrepreneurship Showcase</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Student entrepreneurship showcase and creative business exhibition.
+            </p>
+        </div>
+        
+        <div class="timeline-item" data-aos="fade-up">
+            <div class="timeline-dot"></div>
+            <div class="time">05:00 PM</div>
+            <h3>Closing Session</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Closing remarks and group documentation session.
+            </p>
+        </div>
+        
+    </div>
+</section>
+
+        <!-- RSVP Section -->
+        <section class="rsvp" id="rsvp">
+            <h2 class="section-title" data-aos="fade-up">RSVP</h2>
+            <div class="glass-card rsvp-container" data-aos="fade-up">
+                <!-- FORM DENGAN ATRIBUT NAME UNTUK GOOGLE SHEETS -->
+                <form id="rsvp-form" name="rsvp-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company / Institution</label>
+                        <input type="text" id="company" name="company" class="form-control" required placeholder="Your Company">
+                    </div>
+                    <div class="form-group">
+                        <label for="attendance">Will you attend?</label>
+                        <select id="attendance" name="attendance" class="form-control" required style="background: #0B0F19;">
+                            <option value="yes">Yes, I will attend</option>
+                            <option value="no">Sorry, I can't make it</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Leave a Message (Optional)</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="Looking forward to the event..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="submit-btn">Confirm Attendance</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Closing Section -->
+        <section class="closing">
+            <h2 class="serif" data-aos="zoom-in">"We look forward to welcoming you."</h2>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-regular fa-envelope"></i></a>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">&copy; 2026 R&M Education. All Rights Reserved.</p>
+        </footer>
+
+    </div> <!-- End Main Content -->
+
+    <!-- Back to Top -->
+    <a href="#" id="back-top"><i class="fa-solid fa-arrow-up"></i></a>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Adding slight delay for outline (smooth effect)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover effect for cursor
+        const interactables = document.querySelectorAll('button, a, input, select, textarea');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(224, 170, 255, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Opening Screen Logic
+        const openBtn = document.getElementById('open-btn');
+        const openingScreen = document.getElementById('opening-screen');
+        const mainContent = document.getElementById('main-content');
+        const bgMusic = document.getElementById('bg-music');
+        let musicPlaying = false;
+
+        openBtn.addEventListener('click', () => {
+            openingScreen.classList.add('hidden');
+            setTimeout(() => {
+                openingScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+                
+                // Initialize AOS after main content is visible
+                AOS.init({
+                    duration: 1000,
+                    once: true,
+                    offset: 100
+                });
+
+                // Start Typing Animation
+                typeEffect();
+
+                // Play music (User interaction allows autoplay)
+                bgMusic.play();
+                musicPlaying = true;
+                document.getElementById('music-icon').className = 'fas fa-volume-up';
+
+            }, 1500); // Wait for CSS transition
+        });
+
+        // Typing Effect Logic
+        const textToType = "Retail & Marketing \nEducation Event.";
+        const typingElement = document.querySelector('.typing-text');
+        let typeIndex = 0;
+
+        function typeEffect() {
+            if (typeIndex < textToType.length) {
+                if(textToType.charAt(typeIndex) === '\n'){
+                     typingElement.innerHTML += '<br>';
+                } else {
+                     typingElement.innerHTML += textToType.charAt(typeIndex);
+                }
+                typeIndex++;
+                setTimeout(typeEffect, 100); // Typing speed
+            }
+        }
+
+        // Navbar scroll effect & Back to Top
+        const navbar = document.getElementById('navbar');
+        const backTop = document.getElementById('back-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+                backTop.classList.add('visible');
+            } else {
+                navbar.classList.remove('scrolled');
+                backTop.classList.remove('visible');
+            }
+        });
+
+        // --- GOOGLE SHEETS RSVP LOGIC ---
+        // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbx6BHbXff_U_rJXi_9eAck7B79EAN5YtDzKo0GqGj9TpP11dK7ofRJXZOekp2eV62nzNg/exec';
+        const form = document.forms['rsvp-form'];
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Ubah tombol jadi loading
+            submitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
+            submitBtn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    alert('RSVP Submitted Successfully! We look forward to seeing you.');
+                    form.reset();
+                    submitBtn.innerHTML = 'Confirm Attendance';
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('Oops! Something went wrong. Please try again.');
+                    submitBtn.innerHTML = 'Confirm Attendance';
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+</body>
+</html>
